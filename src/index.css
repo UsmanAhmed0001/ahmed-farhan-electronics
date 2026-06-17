@@ -50,3 +50,39 @@
 body {
   font-family: 'Inter', sans-serif;
 }
+
+/* scroll-reveal "lazy load" effect */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* AC sketch draw-in */
+.sketch-icon path,
+.sketch-icon rect,
+.sketch-icon line,
+.sketch-icon circle {
+  stroke-dasharray: 700;
+  stroke-dashoffset: 700;
+  transition: stroke-dashoffset 2.2s ease-out;
+}
+.sketch-drawn path,
+.sketch-drawn rect,
+.sketch-drawn line,
+.sketch-drawn circle {
+  stroke-dashoffset: 0;
+}
+
+/* slower marquee variant for testimonials */
+.marquee-track-slow {
+  animation: marquee-scroll 45s linear infinite;
+  will-change: transform;
+}
+.marquee-wrap:hover .marquee-track-slow {
+  animation-play-state: paused;
+}

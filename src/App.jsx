@@ -15,7 +15,20 @@ import {
   UserCog,
   Mail,
   MapPin,
+  Star,
+  ImageIcon,
+  PhoneCall,
+  ClipboardList,
+  Wrench,
+  ShieldCheck,
+  Send,
 } from "lucide-react";
+
+const BRAND = {
+  navy: "#2B2F86",
+  maroon: "#8E2A33",
+  sky: "#8CB0CE",
+};
 
 const LOGO_KENWOOD = `<svg xmlns="http://www.w3.org/2000/svg" width="2500" height="2500" viewBox="-6.52 78.09 205.80 36.58"><g fill-rule="evenodd" clip-rule="evenodd"><path d="M49.548 109.614v-27.87h3.818l16.893 24.721V81.744h2.864v27.87h-4.2L52.412 85.275v24.339h-2.864zM26.505 81.744v27.87h18.994v-2.481H29.368v-10.69h14.89v-2.482h-14.89v-9.735h16.131v-2.482H26.505zM2.834 81.744v27.87h2.864v-27.87H2.834zM9.661 94.868l14.078-13.124h-3.961L5.748 94.82l14.984 14.794h3.818L9.661 94.868zM75.168 81.744l12.503 29.875 5.632-12.504 5.631 12.504 12.504-29.875h-3.055l-9.641 22.907-5.439-11.835-5.441 11.93-9.64-23.002h-3.054z"/><path fill="#cc2229" d="M88.721 81.744h9.164l-4.582 10.213-4.582-10.213z"/><path d="M176.559 81.649h-9.258v27.87h10.785c6.682 0 11.836-6.299 11.836-14.412 0-7.827-6.873-13.458-13.363-13.458zm1.05 25.388h-7.445V84.13h6.109c3.721 0 10.785 3.627 10.785 11.263.001 8.017-5.537 11.644-9.449 11.644zM122.951 81.138c-7.117 0-12.889 6.617-12.889 14.78s5.771 14.78 12.889 14.78c7.119 0 12.893-6.617 12.893-14.78s-5.774-14.78-12.893-14.78zm0 26.996c-5.553 0-10.055-5.47-10.055-12.216s4.502-12.216 10.055-12.216c5.555 0 10.057 5.47 10.057 12.216s-4.502 12.216-10.057 12.216zM151.1 81.138c-7.119 0-12.889 6.617-12.889 14.78s5.77 14.78 12.889 14.78 12.891-6.617 12.891-14.78-5.772-14.78-12.891-14.78zm0 26.996c-5.553 0-10.055-5.47-10.055-12.216s4.502-12.216 10.055-12.216c5.555 0 10.057 5.47 10.057 12.216s-4.503 12.216-10.057 12.216z"/></g></svg>`;
 
@@ -33,26 +46,80 @@ const LOGO_HITACHI = `<svg xmlns="http://www.w3.org/2000/svg" width="2500" heigh
 
 const LOGO_DAIKIN = `<svg height="538" viewBox="1 1 298 62.617" width="2500" xmlns="http://www.w3.org/2000/svg"><path d="m68.872 1h-67.87v62.617z" fill="#44c8f5"/><path d="m34.93 1h-33.93v31.323z" fill="#231f20"/><path d="m163.645 14.591-8.86 35.422h15.654l8.853-35.422zm-35.75 20.529h-3.59l5.789-10.218 1.877 10.219zm-2.227-20.533-20.13 35.42h10.352l3.342-5.903h14.372l1.07 5.904h15.28l-6.494-35.42zm109.463.004-8.836 35.422h15.65l8.837-35.422zm-6.995 0h-16.04l-13.425 11.587 2.93-11.587h-15.003l-8.836 35.422h14.956l3.055-12.228 7.997 12.228h18.103l-13.408-18.55zm-134.882 16.097s-1.016 11.506-10.82 11.506h-5.547l4.886-19.106h5.034c1.801.011 7.015.479 6.447 7.6zm-.793-16.08-4.049-.013h-19.585l-8.837 35.407h19.448l7.694.011c10.833 0 21.494-8.064 21.494-20.416 0-14.533-16.166-14.99-16.166-14.99m195.705-.021-5.22 20.857-6.956-20.857h-17.407l-8.843 35.427h10.824l5.271-21.04 6.977 21.04h17.333l8.856-35.427z" fill="#00a0e4"/></svg>`;
 
+function Reveal({ children, className = "", delay = 0 }) {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          obs.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      className={`reveal ${visible ? "reveal-visible" : ""} ${className}`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {children}
+    </div>
+  );
+}
+
+function ACSketch({ drawn, className = "" }) {
+  return (
+    <svg
+      viewBox="0 0 200 140"
+      className={`sketch-icon ${drawn ? "sketch-drawn" : ""} ${className}`}
+      style={{ stroke: BRAND.navy }}
+    >
+      <rect x="6" y="50" width="22" height="6" rx="2" fill="none" strokeWidth="2.5" opacity="0.5" />
+      <rect x="172" y="50" width="22" height="6" rx="2" fill="none" strokeWidth="2.5" opacity="0.5" />
+      <rect x="20" y="30" width="160" height="60" rx="14" fill="none" strokeWidth="3" />
+      <line x1="20" y1="48" x2="180" y2="48" strokeWidth="2" />
+      <line x1="40" y1="64" x2="160" y2="64" strokeWidth="2.5" strokeLinecap="round" />
+      <line x1="40" y1="74" x2="160" y2="74" strokeWidth="2.5" strokeLinecap="round" />
+      <line x1="40" y1="84" x2="160" y2="84" strokeWidth="2.5" strokeLinecap="round" />
+      <circle cx="160" cy="40" r="3.5" fill="none" strokeWidth="2.5" />
+    </svg>
+  );
+}
+
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isCooling, setIsCooling] = useState(false);
   const navLinks = ["Services", "Why Us", "Areas", "Contact"];
+
   const panelRefs = useRef([]);
   const [panelProgress, setPanelProgress] = useState([0, 0, 0]);
+  const processRefs = useRef([]);
+  const [processProgress, setProcessProgress] = useState([0, 0, 0, 0]);
 
   useEffect(() => {
     let frame = null;
     const measure = () => {
       const vh = window.innerHeight;
       const center = vh / 2;
-      const next = panelRefs.current.map((el) => {
+      const compute = (el) => {
         if (!el) return 0;
         const rect = el.getBoundingClientRect();
         const elCenter = rect.top + rect.height / 2;
         const distance = Math.abs(elCenter - center);
         return Math.max(0, 1 - distance / (vh * 0.7));
-      });
-      setPanelProgress(next);
+      };
+      setPanelProgress(panelRefs.current.map(compute));
+      setProcessProgress(processRefs.current.map(compute));
       frame = null;
     };
     const onScroll = () => {
@@ -83,31 +150,53 @@ export default function App() {
   ];
 
   const servicePanels = [
-    {
-      icon: AirVent,
-      label: "Indoor Unit",
-      caption: "Wall-mounted split units — cleaned, serviced, and gas-checked in place.",
-    },
-    {
-      icon: Fan,
-      label: "Outdoor Unit",
-      caption: "Condenser units serviced and re-gassed on-site, rain or heat.",
-    },
-    {
-      icon: Refrigerator,
-      label: "Refrigerators & Freezers",
-      caption: "Compressors, thermostats, and seals — repaired at home, same day.",
-    },
+    { icon: AirVent, label: "Indoor Unit", caption: "Wall-mounted split units — cleaned, serviced, and gas-checked in place." },
+    { icon: Fan, label: "Outdoor Unit", caption: "Condenser units serviced and re-gassed on-site, rain or heat." },
+    { icon: Refrigerator, label: "Refrigerators & Freezers", caption: "Compressors, thermostats, and seals — repaired at home, same day." },
+  ];
+
+  const processSteps = [
+    { icon: PhoneCall, title: "Get in Touch", text: "Call or WhatsApp us and tell us what's wrong — AC, fridge, freezer, or LED TV." },
+    { icon: ClipboardList, title: "Quick Diagnosis", text: "We talk through the symptoms over the phone and give you a fair quote upfront." },
+    { icon: Wrench, title: "On-Site Repair", text: "A technician comes to your home and fixes it on the spot — most jobs done same-day." },
+    { icon: ShieldCheck, title: "Aftercare", text: "Got a follow-up question or the same issue comes back? We're a call away." },
+  ];
+
+  const reviews = [
+    { stars: 5, text: "Customer review placeholder — swap in a real Google review once available.", name: "Customer Name" },
+    { stars: 5, text: "Customer review placeholder — swap in a real Google review once available.", name: "Customer Name" },
+    { stars: 4, text: "Customer review placeholder — swap in a real Google review once available.", name: "Customer Name" },
+    { stars: 5, text: "Customer review placeholder — swap in a real Google review once available.", name: "Customer Name" },
+    { stars: 5, text: "Customer review placeholder — swap in a real Google review once available.", name: "Customer Name" },
+  ];
+
+  const areas = [
+    "Clifton", "Defence (DHA)", "Gulshan-e-Iqbal", "Nazimabad", "North Nazimabad",
+    "Saddar", "Korangi", "Malir", "PECHS", "Gulistan-e-Johar", "Federal B. Area", "Shah Faisal Colony",
+  ];
+
+  const trustBadges = [
+    { icon: ShieldCheck, label: "Genuine Spare Parts" },
+    { icon: UserCog, label: "Experienced Technicians" },
+    { icon: Gauge, label: "Transparent Pricing" },
+    { icon: Wrench, label: "Same-Day Service" },
   ];
 
   return (
-    <div
-      className="min-h-screen bg-neutral-50 text-neutral-900 relative overflow-hidden"
-    >
-            {/* ambient liquid colour blobs (read through the glass nav/footer) */}
-      <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full bg-sky-300/30 blur-3xl" />
-      <div className="pointer-events-none absolute top-32 right-0 w-72 h-72 rounded-full bg-blue-300/20 blur-3xl" />
-      <div className="pointer-events-none absolute top-0 left-0 w-72 h-72 rounded-full bg-cyan-200/30 blur-3xl" />
+    <div className="min-h-screen bg-neutral-50 text-neutral-900 relative overflow-hidden">
+      {/* ambient liquid colour blobs (read through the glass nav/footer) */}
+      <div
+        className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full blur-3xl"
+        style={{ backgroundColor: BRAND.sky, opacity: 0.3 }}
+      />
+      <div
+        className="pointer-events-none absolute top-32 right-0 w-72 h-72 rounded-full blur-3xl"
+        style={{ backgroundColor: BRAND.navy, opacity: 0.12 }}
+      />
+      <div
+        className="pointer-events-none absolute top-0 left-0 w-72 h-72 rounded-full blur-3xl"
+        style={{ backgroundColor: BRAND.maroon, opacity: 0.1 }}
+      />
 
       {/* liquid-glass floating header */}
       <header className="fixed top-4 inset-x-4 lg:inset-x-0 z-50 flex justify-center">
@@ -115,7 +204,10 @@ export default function App() {
           <div className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/70 to-transparent" />
           <div className="relative px-4 sm:px-6 h-16 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center shadow-lg shadow-sky-500/40">
+              <div
+                className="relative w-10 h-10 rounded-xl flex items-center justify-center shadow-lg"
+                style={{ background: `linear-gradient(135deg, ${BRAND.navy}, ${BRAND.maroon})` }}
+              >
                 <span className="font-display font-bold text-sm text-white">AF</span>
                 <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-white animate-pulse" />
               </div>
@@ -123,9 +215,12 @@ export default function App() {
                 <p className="font-display font-semibold text-sm tracking-tight text-neutral-900">
                   Ahmed Farhan
                 </p>
-                <p className="text-xs uppercase tracking-widest text-sky-600/80 font-medium">
+                <span
+                  className="inline-block text-white text-xs uppercase tracking-widest font-medium px-2 py-0.5 rounded mt-0.5"
+                  style={{ backgroundColor: BRAND.navy }}
+                >
                   Electronics &amp; Refrigeration
-                </p>
+                </span>
               </div>
             </div>
 
@@ -137,13 +232,19 @@ export default function App() {
                   className="relative text-sm text-neutral-600 hover:text-neutral-900 transition-colors duration-200 group"
                 >
                   {link}
-                  <span className="absolute -bottom-1 left-0 w-0 h-px bg-sky-500 transition-all duration-300 group-hover:w-full" />
+                  <span
+                    className="absolute -bottom-1 left-0 w-0 h-px transition-all duration-300 group-hover:w-full"
+                    style={{ backgroundColor: BRAND.navy }}
+                  />
                 </a>
               ))}
             </div>
 
             <div className="flex items-center gap-3">
-              <button className="hidden sm:flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 to-blue-600 px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-sky-500/30 hover:shadow-xl hover:shadow-sky-400/40 transition-shadow duration-300">
+              <button
+                className="hidden sm:flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium text-white shadow-lg transition-shadow duration-300"
+                style={{ background: `linear-gradient(to right, ${BRAND.navy}, ${BRAND.maroon})` }}
+              >
                 <Phone size={14} />
                 Book a Repair
               </button>
@@ -169,7 +270,10 @@ export default function App() {
                   {link}
                 </a>
               ))}
-              <button className="mt-2 rounded-full bg-gradient-to-r from-sky-500 to-blue-600 px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-sky-500/30">
+              <button
+                className="mt-2 rounded-full px-5 py-2.5 text-sm font-medium text-white shadow-lg"
+                style={{ background: `linear-gradient(to right, ${BRAND.navy}, ${BRAND.maroon})` }}
+              >
                 Book a Repair
               </button>
             </div>
@@ -180,172 +284,166 @@ export default function App() {
       <main className="relative pt-28">
         {/* hero */}
         <section className="max-w-7xl mx-auto px-6 lg:px-10 py-10 lg:py-16">
-          {/* animated service reel — opens the hero */}
-          <div className="relative w-full aspect-video rounded-3xl border border-neutral-200 overflow-hidden mb-12 bg-gradient-to-br from-sky-950 via-neutral-900 to-neutral-950 shadow-2xl shadow-neutral-300/50">
-            <span className="absolute top-4 left-4 z-10 flex items-center gap-2 text-xs text-white/50 font-medium">
-              <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-              AT WORK
-            </span>
+          <Reveal>
+            <div className="relative w-full aspect-video rounded-3xl border border-neutral-200 overflow-hidden mb-12 bg-gradient-to-br from-sky-950 via-neutral-900 to-neutral-950 shadow-2xl shadow-neutral-300/50">
+              <span className="absolute top-4 left-4 z-10 flex items-center gap-2 text-xs text-white/50 font-medium">
+                <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                AT WORK
+              </span>
 
-            <div className="reel-scene-1 absolute inset-0 flex flex-col items-center justify-center gap-4">
-              <div className="flex items-center gap-5">
-                <UserCog size={44} className="text-sky-300" />
-                <AirVent size={56} className="text-sky-300 animate-pulse" />
+              <div className="reel-scene-1 absolute inset-0 flex flex-col items-center justify-center gap-4">
+                <div className="flex items-center gap-5">
+                  <UserCog size={44} className="text-sky-300" />
+                  <AirVent size={56} className="text-sky-300 animate-pulse" />
+                </div>
+                <p className="font-display text-white/70 text-sm sm:text-base">
+                  Servicing an Indoor Unit
+                </p>
               </div>
-              <p className="font-display text-white/70 text-sm sm:text-base">
-                Servicing an Indoor Unit
-              </p>
-            </div>
 
-            <div className="reel-scene-2 absolute inset-0 flex flex-col items-center justify-center gap-4">
-              <div className="flex items-center gap-5">
-                <UserCog size={44} className="text-sky-300" />
-                <Fan size={56} className="text-sky-300 animate-spin" />
+              <div className="reel-scene-2 absolute inset-0 flex flex-col items-center justify-center gap-4">
+                <div className="flex items-center gap-5">
+                  <UserCog size={44} className="text-sky-300" />
+                  <Fan size={56} className="text-sky-300 animate-spin" />
+                </div>
+                <p className="font-display text-white/70 text-sm sm:text-base">
+                  Gas-Charging an Outdoor Unit
+                </p>
               </div>
-              <p className="font-display text-white/70 text-sm sm:text-base">
-                Gas-Charging an Outdoor Unit
-              </p>
-            </div>
 
-            <div className="reel-scene-3 absolute inset-0 flex flex-col items-center justify-center gap-4">
-              <div className="flex items-center gap-5">
-                <UserCog size={44} className="text-sky-300" />
-                <Refrigerator size={56} className="text-sky-300" />
+              <div className="reel-scene-3 absolute inset-0 flex flex-col items-center justify-center gap-4">
+                <div className="flex items-center gap-5">
+                  <UserCog size={44} className="text-sky-300" />
+                  <Refrigerator size={56} className="text-sky-300" />
+                </div>
+                <p className="font-display text-white/70 text-sm sm:text-base">
+                  Repairing a Refrigerator
+                </p>
               </div>
-              <p className="font-display text-white/70 text-sm sm:text-base">
-                Repairing a Refrigerator
-              </p>
             </div>
-          </div>
+          </Reveal>
 
           <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-semibold leading-tight tracking-tight">
-                <span className="text-neutral-900">Expert AC, Fridge &amp; LED Repair,</span>
-                <br />
-                <span className="bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">
-                  Delivered to Your Door.
-                </span>
-              </h1>
-              <p className="mt-6 text-neutral-600 text-base sm:text-lg leading-relaxed max-w-md">
-                Same-day repair, servicing, and installation across Karachi — split
-                ACs, fridges, deep freezers, and LED TVs, fixed at home by Ahmed
-                Farhan's team.
-              </p>
-              <div className="mt-8 flex flex-wrap items-center gap-4">
-                <a
-                  href="https://wa.me/923333078697"
-                  className="flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-400 to-green-600 px-6 py-3 text-sm font-medium text-white shadow-lg shadow-emerald-500/30 hover:shadow-xl hover:shadow-emerald-400/40 transition-shadow duration-300"
-                >
-                  <MessageCircle size={16} />
-                  WhatsApp Us
-                </a>
-                <a
-                  href="tel:+923333078697"
-                  className="flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 to-blue-600 px-6 py-3 text-sm font-medium text-white shadow-lg shadow-sky-500/30 hover:shadow-xl hover:shadow-sky-400/40 transition-shadow duration-300"
-                >
-                  <Phone size={16} />
-                  Call +92 333 3078697
-                </a>
-              </div>
-            </div>
-
-            {/* interactive AC visual */}
-            <div className="flex flex-col items-center gap-6">
-              <div
-                className={`relative w-full max-w-sm rounded-3xl bg-gradient-to-b from-white to-neutral-50 border border-neutral-200 p-6 shadow-xl shadow-neutral-300/40 transition-shadow duration-700 ${
-                  isCooling ? "shadow-sky-400/40" : ""
-                }`}
-              >
-                <div className="flex items-center justify-between mb-5">
-                  <p className="text-neutral-800 text-sm font-semibold font-display">
-                    Living Room Split AC
-                  </p>
+            <Reveal>
+              <div>
+                <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-semibold leading-tight tracking-tight">
+                  <span className="text-neutral-900">Expert AC, Fridge &amp; LED Repair,</span>
+                  <br />
                   <span
-                    className={`w-2.5 h-2.5 rounded-full transition-colors duration-700 ${
-                      isCooling ? "bg-sky-400 animate-pulse" : "bg-neutral-300"
-                    }`}
-                  />
+                    className="bg-clip-text text-transparent"
+                    style={{ backgroundImage: `linear-gradient(to right, ${BRAND.navy}, ${BRAND.maroon})` }}
+                  >
+                    Delivered to Your Door.
+                  </span>
+                </h1>
+                <p className="mt-6 text-neutral-600 text-base sm:text-lg leading-relaxed max-w-md">
+                  Same-day repair, servicing, and installation across Karachi — split
+                  ACs, fridges, deep freezers, and LED TVs, fixed at home by Ahmed
+                  Farhan's team.
+                </p>
+                <div className="mt-8 flex flex-wrap items-center gap-4">
+                  <a
+                    href="https://wa.me/923333078697"
+                    className="flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-400 to-green-600 px-6 py-3 text-sm font-medium text-white shadow-lg shadow-emerald-500/30 hover:shadow-xl hover:shadow-emerald-400/40 transition-shadow duration-300"
+                  >
+                    <MessageCircle size={16} />
+                    WhatsApp Us
+                  </a>
+                  <a
+                    href="tel:+923333078697"
+                    className="flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium text-white shadow-lg transition-shadow duration-300"
+                    style={{ background: `linear-gradient(to right, ${BRAND.navy}, ${BRAND.maroon})` }}
+                  >
+                    <Phone size={16} />
+                    Call +92 333 3078697
+                  </a>
                 </div>
+              </div>
+            </Reveal>
 
-                <div className="rounded-2xl bg-neutral-100 p-5">
-                  <div className="flex flex-col gap-2 mb-4">
-                    <span
-                      className={`h-1.5 rounded-full transition-colors duration-700 ${
-                        isCooling ? "bg-sky-300" : "bg-neutral-300"
-                      }`}
-                    />
-                    <span
-                      className={`h-1.5 rounded-full transition-colors duration-700 ${
-                        isCooling ? "bg-sky-300" : "bg-neutral-300"
-                      }`}
-                    />
-                    <span
-                      className={`h-1.5 rounded-full transition-colors duration-700 ${
-                        isCooling ? "bg-sky-300" : "bg-neutral-300"
-                      }`}
-                    />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <Fan
-                      size={28}
-                      className={
-                        isCooling ? "text-sky-500 animate-spin" : "text-neutral-400"
-                      }
-                    />
-                    <p
-                      className={`text-2xl font-display font-semibold ${
-                        isCooling ? "text-sky-600" : "text-neutral-700"
-                      }`}
-                    >
-                      {isCooling ? "18°C" : "Off"}
-                    </p>
-                  </div>
-                </div>
-
+            <Reveal delay={100}>
+              <div className="flex flex-col items-center gap-6">
                 <div
-                  className={`pointer-events-none absolute left-1/2 -translate-x-1/2 -bottom-6 w-40 h-16 rounded-full bg-sky-300 blur-2xl transition-opacity duration-700 ${
-                    isCooling ? "opacity-60" : "opacity-0"
-                  }`}
-                />
-              </div>
+                  className={`relative w-full max-w-sm rounded-3xl bg-gradient-to-b from-white to-neutral-50 border border-neutral-200 p-6 shadow-xl shadow-neutral-300/40 transition-shadow duration-700`}
+                  style={isCooling ? { boxShadow: `0 25px 50px -12px ${BRAND.sky}66` } : undefined}
+                >
+                  <div className="flex items-center justify-between mb-5">
+                    <p className="text-neutral-800 text-sm font-semibold font-display">
+                      Living Room Split AC
+                    </p>
+                    <span
+                      className="w-2.5 h-2.5 rounded-full transition-colors duration-700"
+                      style={{ backgroundColor: isCooling ? BRAND.sky : "#d4d4d4" }}
+                    />
+                  </div>
 
-              <div className="flex items-center gap-3">
-                {isCooling ? (
-                  <Snowflake size={16} className="text-sky-500" />
-                ) : (
-                  <Power size={16} className="text-neutral-400" />
-                )}
-                <span
-                  className={`text-sm font-medium ${
-                    isCooling ? "text-sky-600" : "text-neutral-500"
-                  }`}
-                >
-                  {isCooling ? "Cooling" : "Standby"}
-                </span>
-                <button
-                  onClick={() => setIsCooling(!isCooling)}
-                  className={`relative inline-flex items-center w-16 h-9 rounded-full border border-neutral-200 transition-colors duration-500 ${
-                    isCooling
-                      ? "bg-gradient-to-r from-sky-400 to-blue-600"
-                      : "bg-neutral-200"
-                  }`}
-                  aria-label="Toggle AC"
-                >
-                  <span
-                    className={`absolute left-1 w-7 h-7 rounded-full bg-white shadow-md transition-transform duration-500 ${
-                      isCooling ? "translate-x-7" : "translate-x-0"
-                    }`}
+                  <div className="rounded-2xl bg-neutral-100 p-5">
+                    <div className="flex flex-col gap-2 mb-4">
+                      {[0, 1, 2].map((i) => (
+                        <span
+                          key={i}
+                          className="h-1.5 rounded-full transition-colors duration-700"
+                          style={{ backgroundColor: isCooling ? BRAND.sky : "#d4d4d4" }}
+                        />
+                      ))}
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <Fan
+                        size={28}
+                        className={isCooling ? "animate-spin" : "text-neutral-400"}
+                        style={isCooling ? { color: BRAND.sky } : undefined}
+                      />
+                      <p
+                        className="text-2xl font-display font-semibold"
+                        style={{ color: isCooling ? BRAND.navy : "#404040" }}
+                      >
+                        {isCooling ? "18°C" : "Off"}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div
+                    className="pointer-events-none absolute left-1/2 -translate-x-1/2 -bottom-6 w-40 h-16 rounded-full blur-2xl transition-opacity duration-700"
+                    style={{ backgroundColor: BRAND.sky, opacity: isCooling ? 0.6 : 0 }}
                   />
-                </button>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  {isCooling ? (
+                    <Snowflake size={16} style={{ color: BRAND.navy }} />
+                  ) : (
+                    <Power size={16} className="text-neutral-400" />
+                  )}
+                  <span
+                    className="text-sm font-medium"
+                    style={{ color: isCooling ? BRAND.navy : "#737373" }}
+                  >
+                    {isCooling ? "Cooling" : "Standby"}
+                  </span>
+                  <button
+                    onClick={() => setIsCooling(!isCooling)}
+                    className="relative inline-flex items-center w-16 h-9 rounded-full border border-neutral-200 transition-colors duration-500"
+                    style={{ backgroundColor: isCooling ? BRAND.sky : "#e5e5e5" }}
+                    aria-label="Toggle AC"
+                  >
+                    <span
+                      className={`absolute left-1 w-7 h-7 rounded-full bg-white shadow-md transition-transform duration-500 ${
+                        isCooling ? "translate-x-7" : "translate-x-0"
+                      }`}
+                    />
+                  </button>
+                </div>
               </div>
-            </div>
+            </Reveal>
           </div>
         </section>
 
         {/* trusted brands marquee */}
         <section className="relative py-14 overflow-hidden border-y border-neutral-200">
-          <p className="text-xs uppercase tracking-widest text-sky-600/80 font-medium text-center mb-8">
+          <p
+            className="text-xs uppercase tracking-widest font-medium text-center mb-8"
+            style={{ color: BRAND.maroon }}
+          >
             Trusted Brands We Service
           </p>
 
@@ -376,119 +474,210 @@ export default function App() {
 
         {/* services */}
         <section className="max-w-7xl mx-auto px-6 lg:px-10 py-16 lg:py-24">
-          <div className="max-w-2xl mb-12">
-            <p className="text-xs uppercase tracking-widest text-sky-600/80 font-medium mb-3">
-              Services
-            </p>
-            <h2 className="font-display text-3xl sm:text-4xl font-semibold text-neutral-900 tracking-tight">
-              Repairs we handle, all from one team.
-            </h2>
-            <p className="mt-4 text-neutral-600 text-base leading-relaxed">
-              From a quick gas top-up to a full TV panel fix — every job is
-              carried out at your home by trained technicians.
-            </p>
-          </div>
+          <Reveal>
+            <div className="max-w-2xl mb-12">
+              <p className="text-xs uppercase tracking-widest font-medium mb-3" style={{ color: BRAND.maroon }}>
+                Services
+              </p>
+              <h2 className="font-display text-3xl sm:text-4xl font-semibold text-neutral-900 tracking-tight">
+                Repairs we handle, all from one team.
+              </h2>
+              <p className="mt-4 text-neutral-600 text-base leading-relaxed">
+                From a quick gas top-up to a full TV panel fix — every job is
+                carried out at your home by trained technicians.
+              </p>
+            </div>
+          </Reveal>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            <div className="group relative lg:col-span-2 rounded-3xl border border-neutral-200 bg-white/70 backdrop-blur-xl p-7 transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:border-sky-300 hover:shadow-xl hover:shadow-sky-200/50">
-              <span className="absolute top-7 right-7 rounded-full bg-sky-50 border border-sky-200 px-3 py-1 text-xs text-sky-700 font-medium">
-                Most requested
-              </span>
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-sky-100 to-blue-50 border border-sky-200 flex items-center justify-center mb-6 transition-transform duration-300 group-hover:scale-110">
-                <AirVent size={26} className="text-sky-600" />
-              </div>
-              <h3 className="font-display font-semibold text-neutral-900 text-xl mb-2">
-                AC Service &amp; Deep Cleaning
-              </h3>
-              <p className="text-neutral-500 text-sm leading-relaxed max-w-sm">
-                Coil cleaning, dust removal, and full performance tune-ups to
-                restore cooling power on split and window units.
-              </p>
-            </div>
-
-            <div className="group relative rounded-3xl border border-neutral-200 bg-white/70 backdrop-blur-xl p-7 transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:border-sky-300 hover:shadow-xl hover:shadow-sky-200/50">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-sky-100 to-blue-50 border border-sky-200 flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110">
-                <Gauge size={22} className="text-sky-600" />
-              </div>
-              <h3 className="font-display font-semibold text-neutral-900 text-lg mb-2">
-                Gas Refilling (R-22, R-410A)
-              </h3>
-              <p className="text-neutral-500 text-sm leading-relaxed">
-                Leak detection and refrigerant top-up for older and current
-                split AC systems.
-              </p>
-            </div>
-
-            <div className="group relative rounded-3xl border border-neutral-200 bg-white/70 backdrop-blur-xl p-7 transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:border-sky-300 hover:shadow-xl hover:shadow-sky-200/50">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-sky-100 to-blue-50 border border-sky-200 flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110">
-                <Truck size={22} className="text-sky-600" />
-              </div>
-              <h3 className="font-display font-semibold text-neutral-900 text-lg mb-2">
-                Installation &amp; Shifting
-              </h3>
-              <p className="text-neutral-500 text-sm leading-relaxed">
-                Professional mounting, relocation, and re-commissioning for
-                split and window units.
-              </p>
-            </div>
-
-            <div className="group relative rounded-3xl border border-neutral-200 bg-white/70 backdrop-blur-xl p-7 transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:border-sky-300 hover:shadow-xl hover:shadow-sky-200/50">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-sky-100 to-blue-50 border border-sky-200 flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110">
-                <Refrigerator size={22} className="text-sky-600" />
-              </div>
-              <h3 className="font-display font-semibold text-neutral-900 text-lg mb-2">
-                Refrigerator Repair
-              </h3>
-              <p className="text-neutral-500 text-sm leading-relaxed">
-                Compressor, thermostat, and cooling faults fixed for all
-                major fridge brands.
-              </p>
-            </div>
-
-            <div className="group relative rounded-3xl border border-neutral-200 bg-white/70 backdrop-blur-xl p-7 transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:border-sky-300 hover:shadow-xl hover:shadow-sky-200/50">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-sky-100 to-blue-50 border border-sky-200 flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110">
-                <Snowflake size={22} className="text-sky-600" />
-              </div>
-              <h3 className="font-display font-semibold text-neutral-900 text-lg mb-2">
-                Deep &amp; Chest Freezers
-              </h3>
-              <p className="text-neutral-500 text-sm leading-relaxed">
-                Repair and servicing for commercial and home chest and deep
-                freezers.
-              </p>
-            </div>
-
-            <div className="group relative lg:col-span-3 rounded-3xl border border-neutral-200 bg-white/70 backdrop-blur-xl p-7 sm:p-8 flex flex-col sm:flex-row sm:items-center gap-5 transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:border-sky-300 hover:shadow-xl hover:shadow-sky-200/50">
-              <div className="w-14 h-14 shrink-0 rounded-2xl bg-gradient-to-br from-sky-100 to-blue-50 border border-sky-200 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
-                <Tv size={26} className="text-sky-600" />
-              </div>
-              <div>
-                <h3 className="font-display font-semibold text-neutral-900 text-lg mb-1">
-                  LED TV Repair
+            <Reveal delay={0} className="lg:col-span-2">
+              <div className="group relative rounded-3xl border border-neutral-200 bg-white/70 backdrop-blur-xl p-7 transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:shadow-xl h-full">
+                <span
+                  className="absolute top-7 right-7 rounded-full px-3 py-1 text-xs font-medium"
+                  style={{ backgroundColor: `${BRAND.maroon}14`, color: BRAND.maroon, border: `1px solid ${BRAND.maroon}33` }}
+                >
+                  Most requested
+                </span>
+                <div
+                  className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 transition-transform duration-300 group-hover:scale-110"
+                  style={{ backgroundColor: `${BRAND.navy}0f`, border: `1px solid ${BRAND.navy}26` }}
+                >
+                  <AirVent size={26} style={{ color: BRAND.navy }} />
+                </div>
+                <h3 className="font-display font-semibold text-neutral-900 text-xl mb-2">
+                  AC Service &amp; Deep Cleaning
                 </h3>
-                <p className="text-neutral-500 text-sm leading-relaxed">
-                  Panel, power supply, and display issues diagnosed and
-                  repaired on-site for all major LED TV brands.
+                <p className="text-neutral-500 text-sm leading-relaxed max-w-sm">
+                  Coil cleaning, dust removal, and full performance tune-ups to
+                  restore cooling power on split and window units.
                 </p>
               </div>
+            </Reveal>
+
+            <Reveal delay={60}>
+              <div className="group relative rounded-3xl border border-neutral-200 bg-white/70 backdrop-blur-xl p-7 transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:shadow-xl h-full">
+                <div
+                  className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110"
+                  style={{ backgroundColor: `${BRAND.navy}0f`, border: `1px solid ${BRAND.navy}26` }}
+                >
+                  <Gauge size={22} style={{ color: BRAND.navy }} />
+                </div>
+                <h3 className="font-display font-semibold text-neutral-900 text-lg mb-2">
+                  Gas Refilling (R-22, R-410A)
+                </h3>
+                <p className="text-neutral-500 text-sm leading-relaxed">
+                  Leak detection and refrigerant top-up for older and current
+                  split AC systems.
+                </p>
+              </div>
+            </Reveal>
+
+            <Reveal delay={120}>
+              <div className="group relative rounded-3xl border border-neutral-200 bg-white/70 backdrop-blur-xl p-7 transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:shadow-xl h-full">
+                <div
+                  className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110"
+                  style={{ backgroundColor: `${BRAND.navy}0f`, border: `1px solid ${BRAND.navy}26` }}
+                >
+                  <Truck size={22} style={{ color: BRAND.navy }} />
+                </div>
+                <h3 className="font-display font-semibold text-neutral-900 text-lg mb-2">
+                  Installation &amp; Shifting
+                </h3>
+                <p className="text-neutral-500 text-sm leading-relaxed">
+                  Professional mounting, relocation, and re-commissioning for
+                  split and window units.
+                </p>
+              </div>
+            </Reveal>
+
+            <Reveal delay={180}>
+              <div className="group relative rounded-3xl border border-neutral-200 bg-white/70 backdrop-blur-xl p-7 transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:shadow-xl h-full">
+                <div
+                  className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110"
+                  style={{ backgroundColor: `${BRAND.navy}0f`, border: `1px solid ${BRAND.navy}26` }}
+                >
+                  <Refrigerator size={22} style={{ color: BRAND.navy }} />
+                </div>
+                <h3 className="font-display font-semibold text-neutral-900 text-lg mb-2">
+                  Refrigerator Repair
+                </h3>
+                <p className="text-neutral-500 text-sm leading-relaxed">
+                  Compressor, thermostat, and cooling faults fixed for all
+                  major fridge brands.
+                </p>
+              </div>
+            </Reveal>
+
+            <Reveal delay={240}>
+              <div className="group relative rounded-3xl border border-neutral-200 bg-white/70 backdrop-blur-xl p-7 transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:shadow-xl h-full">
+                <div
+                  className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110"
+                  style={{ backgroundColor: `${BRAND.navy}0f`, border: `1px solid ${BRAND.navy}26` }}
+                >
+                  <Snowflake size={22} style={{ color: BRAND.navy }} />
+                </div>
+                <h3 className="font-display font-semibold text-neutral-900 text-lg mb-2">
+                  Deep &amp; Chest Freezers
+                </h3>
+                <p className="text-neutral-500 text-sm leading-relaxed">
+                  Repair and servicing for commercial and home chest and deep
+                  freezers.
+                </p>
+              </div>
+            </Reveal>
+
+            <Reveal delay={300} className="lg:col-span-3">
+              <div className="group relative rounded-3xl border border-neutral-200 bg-white/70 backdrop-blur-xl p-7 sm:p-8 flex flex-col sm:flex-row sm:items-center gap-5 transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:shadow-xl">
+                <div
+                  className="w-14 h-14 shrink-0 rounded-2xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
+                  style={{ backgroundColor: `${BRAND.navy}0f`, border: `1px solid ${BRAND.navy}26` }}
+                >
+                  <Tv size={26} style={{ color: BRAND.navy }} />
+                </div>
+                <div>
+                  <h3 className="font-display font-semibold text-neutral-900 text-lg mb-1">
+                    LED TV Repair
+                  </h3>
+                  <p className="text-neutral-500 text-sm leading-relaxed">
+                    Panel, power supply, and display issues diagnosed and
+                    repaired on-site for all major LED TV brands.
+                  </p>
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* how we work */}
+        <section className="max-w-7xl mx-auto px-6 lg:px-10 py-16 lg:py-24">
+          <Reveal className="text-center">
+            <p className="text-xs uppercase tracking-widest font-medium mb-3" style={{ color: BRAND.maroon }}>
+              Our Process
+            </p>
+            <h2 className="font-display text-3xl sm:text-4xl font-semibold text-neutral-900 tracking-tight">
+              How We Work
+            </h2>
+            <p className="mt-4 text-neutral-600 text-base leading-relaxed max-w-xl mx-auto">
+              Simple, transparent, and fast — from your first message to the
+              job being done.
+            </p>
+            <div className="flex justify-center mt-6">
+              <ACSketch drawn className="w-40 sm:w-52" />
             </div>
+          </Reveal>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+            {processSteps.map((step, i) => {
+              const Icon = step.icon;
+              const progress = processProgress[i] || 0;
+              const scale = 0.85 + progress * 0.15;
+              const opacity = 0.4 + progress * 0.6;
+              return (
+                <div
+                  key={step.title}
+                  ref={(el) => (processRefs.current[i] = el)}
+                  className="will-change-transform"
+                  style={{ transform: `scale(${scale})`, opacity }}
+                >
+                  <div className="rounded-3xl border border-neutral-200 bg-white/70 backdrop-blur-xl p-7 h-full shadow-lg shadow-neutral-200/50">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div
+                        className="w-10 h-10 rounded-full flex items-center justify-center text-white font-display font-semibold text-sm"
+                        style={{ background: `linear-gradient(135deg, ${BRAND.navy}, ${BRAND.maroon})` }}
+                      >
+                        {i + 1}
+                      </div>
+                      <Icon size={22} style={{ color: BRAND.navy }} />
+                    </div>
+                    <h3 className="font-display font-semibold text-neutral-900 text-lg mb-2">
+                      {step.title}
+                    </h3>
+                    <p className="text-neutral-500 text-sm leading-relaxed">
+                      {step.text}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </section>
 
         {/* up close — scroll-linked zoom showcase */}
         <section className="max-w-7xl mx-auto px-6 lg:px-10 py-16 lg:py-24">
-          <div className="max-w-2xl mb-4">
-            <p className="text-xs uppercase tracking-widest text-sky-600/80 font-medium mb-3">
-              Up Close
-            </p>
-            <h2 className="font-display text-3xl sm:text-4xl font-semibold text-neutral-900 tracking-tight">
-              Every system, every angle.
-            </h2>
-            <p className="mt-4 text-neutral-600 text-base leading-relaxed">
-              From the indoor unit on your wall to the compressor outside and
-              the fridge in your kitchen — here's what we actually work on.
-            </p>
-          </div>
+          <Reveal>
+            <div className="max-w-2xl mb-4">
+              <p className="text-xs uppercase tracking-widest font-medium mb-3" style={{ color: BRAND.maroon }}>
+                Up Close
+              </p>
+              <h2 className="font-display text-3xl sm:text-4xl font-semibold text-neutral-900 tracking-tight">
+                Every system, every angle.
+              </h2>
+              <p className="mt-4 text-neutral-600 text-base leading-relaxed">
+                From the indoor unit on your wall to the compressor outside and
+                the fridge in your kitchen — here's what we actually work on.
+              </p>
+            </div>
+          </Reveal>
 
           {servicePanels.map((panel, i) => {
             const Icon = panel.icon;
@@ -503,8 +692,11 @@ export default function App() {
                 style={{ transform: `scale(${scale})`, opacity }}
               >
                 <div className="flex flex-col items-center text-center gap-5 rounded-3xl border border-neutral-200 bg-white/70 backdrop-blur-xl px-10 py-12 max-w-md shadow-xl shadow-neutral-200/50">
-                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-sky-100 to-blue-50 border border-sky-200 flex items-center justify-center">
-                    <Icon size={36} className="text-sky-600" />
+                  <div
+                    className="w-20 h-20 rounded-full flex items-center justify-center"
+                    style={{ backgroundColor: `${BRAND.navy}0f`, border: `1px solid ${BRAND.navy}26` }}
+                  >
+                    <Icon size={36} style={{ color: BRAND.navy }} />
                   </div>
                   <h3 className="font-display text-2xl font-semibold text-neutral-900">
                     {panel.label}
@@ -517,6 +709,196 @@ export default function App() {
             );
           })}
         </section>
+
+        {/* recent works */}
+        <section className="max-w-7xl mx-auto px-6 lg:px-10 py-16 lg:py-24">
+          <Reveal>
+            <div className="max-w-2xl mb-10">
+              <p className="text-xs uppercase tracking-widest font-medium mb-3" style={{ color: BRAND.maroon }}>
+                Our Work
+              </p>
+              <h2 className="font-display text-3xl sm:text-4xl font-semibold text-neutral-900 tracking-tight">
+                Recent Projects
+              </h2>
+              <p className="mt-4 text-neutral-600 text-base leading-relaxed">
+                Real photos from real jobs are coming soon — this grid is ready
+                to drop them into.
+              </p>
+            </div>
+          </Reveal>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <Reveal key={i} delay={i * 50}>
+                <div
+                  className="aspect-square rounded-2xl border border-neutral-200 flex flex-col items-center justify-center gap-2"
+                  style={{ backgroundColor: `${BRAND.navy}08` }}
+                >
+                  <ImageIcon size={28} style={{ color: BRAND.navy, opacity: 0.4 }} />
+                  <span className="text-xs text-neutral-400">Photo coming soon</span>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+
+        {/* testimonials */}
+        <section className="relative py-16 lg:py-24 border-y border-neutral-200 overflow-hidden">
+          <Reveal className="text-center max-w-2xl mx-auto px-6 mb-10">
+            <p className="text-xs uppercase tracking-widest font-medium mb-3" style={{ color: BRAND.maroon }}>
+              What Customers Say
+            </p>
+            <h2 className="font-display text-3xl sm:text-4xl font-semibold text-neutral-900 tracking-tight">
+              Trusted Across Karachi
+            </h2>
+            <p className="mt-4 text-neutral-600 text-base leading-relaxed">
+              Real reviews are coming soon — these cards are placeholders ready
+              to be swapped for genuine customer quotes.
+            </p>
+          </Reveal>
+
+          <div className="marquee-wrap relative">
+            <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-neutral-50 to-transparent z-10" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-neutral-50 to-transparent z-10" />
+            <div className="flex w-max marquee-track-slow items-stretch gap-5 px-6">
+              {[...reviews, ...reviews].map((review, i) => (
+                <div
+                  key={i}
+                  className="w-72 shrink-0 rounded-3xl border border-neutral-200 bg-white/80 backdrop-blur-xl p-6 shadow-lg shadow-neutral-200/40"
+                >
+                  <div className="flex items-center gap-1 mb-3">
+                    {Array.from({ length: 5 }).map((_, s) => (
+                      <Star
+                        key={s}
+                        size={14}
+                        fill={s < review.stars ? "#f59e0b" : "none"}
+                        className={s < review.stars ? "text-amber-500" : "text-neutral-300"}
+                      />
+                    ))}
+                  </div>
+                  <p className="text-sm text-neutral-500 italic leading-relaxed mb-4">
+                    "{review.text}"
+                  </p>
+                  <p className="text-sm font-medium text-neutral-700">{review.name}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* areas we serve */}
+        <section className="max-w-7xl mx-auto px-6 lg:px-10 py-16 lg:py-24">
+          <Reveal>
+            <p className="text-xs uppercase tracking-widest font-medium mb-3" style={{ color: BRAND.maroon }}>
+              Coverage
+            </p>
+            <h2 className="font-display text-3xl sm:text-4xl font-semibold text-neutral-900 tracking-tight">
+              Areas We Serve
+            </h2>
+            <span
+              className="inline-block text-white text-sm font-medium px-3 py-1 rounded mt-2"
+              style={{ backgroundColor: BRAND.navy }}
+            >
+              Karachi &amp; Surrounding
+            </span>
+            <p className="mt-4 text-neutral-600 text-base leading-relaxed max-w-xl">
+              Same-day response across most of Karachi. Call to confirm coverage
+              for your specific area.
+            </p>
+          </Reveal>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mt-8">
+            {areas.map((area, i) => (
+              <Reveal key={area} delay={i * 30}>
+                <a
+                  href="#"
+                  className="block text-center rounded-xl border border-neutral-200 bg-white/70 backdrop-blur-xl px-4 py-3 text-sm text-neutral-700 hover:bg-white hover:shadow-md transition-all duration-300"
+                  style={{ ["--hover-color"]: BRAND.navy }}
+                  onMouseEnter={(e) => (e.currentTarget.style.borderColor = BRAND.navy)}
+                  onMouseLeave={(e) => (e.currentTarget.style.borderColor = "")}
+                >
+                  {area}
+                </a>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+
+        {/* why trust us */}
+        <section className="max-w-7xl mx-auto px-6 lg:px-10 py-16 lg:py-24">
+          <Reveal className="text-center max-w-2xl mx-auto">
+            <p className="text-xs uppercase tracking-widest font-medium mb-3" style={{ color: BRAND.maroon }}>
+              Why Trust Us
+            </p>
+            <h2 className="font-display text-3xl sm:text-4xl font-semibold text-neutral-900 tracking-tight">
+              Built on honest service
+            </h2>
+            <p className="mt-4 text-neutral-600 text-base leading-relaxed">
+              No formal certification logos to show yet — here's what we
+              actually stand behind on every job.
+            </p>
+          </Reveal>
+
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-5 mt-10">
+            {trustBadges.map((badge, i) => {
+              const Icon = badge.icon;
+              return (
+                <Reveal key={badge.label} delay={i * 70}>
+                  <div className="flex flex-col items-center text-center gap-3 rounded-2xl border border-neutral-200 bg-white/70 backdrop-blur-xl p-6">
+                    <div
+                      className="w-12 h-12 rounded-full flex items-center justify-center"
+                      style={{ backgroundColor: `${BRAND.navy}0f`, border: `1px solid ${BRAND.navy}26` }}
+                    >
+                      <Icon size={22} style={{ color: BRAND.navy }} />
+                    </div>
+                    <p className="text-sm font-medium text-neutral-700">{badge.label}</p>
+                  </div>
+                </Reveal>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* newsletter */}
+        <section className="px-4 lg:px-0 mb-16">
+          <Reveal>
+            <div
+              className="relative mx-auto max-w-5xl rounded-3xl overflow-hidden p-10 sm:p-14 text-center"
+              style={{ background: `linear-gradient(135deg, ${BRAND.navy}, ${BRAND.maroon})` }}
+            >
+              <p className="text-xs uppercase tracking-widest font-medium text-white/70 mb-3">
+                Stay Informed
+              </p>
+              <h2 className="font-display text-2xl sm:text-3xl font-semibold text-white tracking-tight">
+                Get Expert Tips Straight to Your Inbox
+              </h2>
+              <p className="mt-3 text-white/70 text-sm sm:text-base max-w-md mx-auto">
+                Maintenance reminders and seasonal AC/fridge care tips. No spam.
+              </p>
+              <form
+                className="mt-6 flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+                onSubmit={(e) => e.preventDefault()}
+              >
+                <input
+                  type="email"
+                  placeholder="Your email address"
+                  className="flex-1 rounded-full px-5 py-3 text-sm bg-white/15 border border-white/30 text-white placeholder-white/60 focus:outline-none focus:bg-white/20"
+                />
+                <button
+                  type="submit"
+                  className="flex items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-medium"
+                  style={{ color: BRAND.navy }}
+                >
+                  <Send size={14} />
+                  Subscribe
+                </button>
+              </form>
+              <p className="mt-3 text-xs text-white/50">
+                Form UI only — connect a real signup service before going live.
+              </p>
+            </div>
+          </Reveal>
+        </section>
       </main>
 
       {/* liquid-glass footer */}
@@ -527,16 +909,22 @@ export default function App() {
           <div className="relative px-8 py-12 grid sm:grid-cols-3 gap-10">
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center shadow-lg shadow-sky-500/40">
+                <div
+                  className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg"
+                  style={{ background: `linear-gradient(135deg, ${BRAND.navy}, ${BRAND.maroon})` }}
+                >
                   <span className="font-display font-bold text-sm text-white">AF</span>
                 </div>
                 <div className="leading-tight">
                   <p className="font-display font-semibold text-sm text-neutral-900">
                     Ahmed Farhan
                   </p>
-                  <p className="text-xs uppercase tracking-widest text-sky-600/80 font-medium">
+                  <span
+                    className="inline-block text-white text-xs uppercase tracking-widest font-medium px-2 py-0.5 rounded mt-0.5"
+                    style={{ backgroundColor: BRAND.navy }}
+                  >
                     Electronics &amp; Refrigeration
-                  </p>
+                  </span>
                 </div>
               </div>
               <p className="text-sm text-neutral-500 leading-relaxed max-w-xs">
@@ -571,25 +959,25 @@ export default function App() {
                   href="tel:+923333078697"
                   className="flex items-center gap-2 hover:text-neutral-900 transition-colors"
                 >
-                  <Phone size={15} className="text-sky-600" />
+                  <Phone size={15} style={{ color: BRAND.navy }} />
                   0333-3078697
                 </a>
                 <a
                   href="tel:+923218201772"
                   className="flex items-center gap-2 hover:text-neutral-900 transition-colors"
                 >
-                  <Phone size={15} className="text-sky-600" />
+                  <Phone size={15} style={{ color: BRAND.navy }} />
                   0321-8201772
                 </a>
                 <a
                   href="mailto:ahmed_farhaneng@outlook.com"
                   className="flex items-center gap-2 hover:text-neutral-900 transition-colors"
                 >
-                  <Mail size={15} className="text-sky-600" />
+                  <Mail size={15} style={{ color: BRAND.navy }} />
                   ahmed_farhaneng@outlook.com
                 </a>
                 <p className="flex items-center gap-2">
-                  <MapPin size={15} className="text-sky-600" />
+                  <MapPin size={15} style={{ color: BRAND.navy }} />
                   Karachi, Pakistan
                 </p>
               </div>
