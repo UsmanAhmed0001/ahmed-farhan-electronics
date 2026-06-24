@@ -2,6 +2,17 @@ import { useState, useRef, useEffect } from "react";
 import PillNav from "./PillNav";
 import LogoLoop from "./LogoLoop";
 import CircularGallery from "./CircularGallery";
+
+const GALLERY_ITEMS = [
+  { image: "https://picsum.photos/seed/ac1/800/600", text: "AC Deep Clean" },
+  { image: "https://picsum.photos/seed/ac2/800/600", text: "Split Unit Install" },
+  { image: "https://picsum.photos/seed/ac3/800/600", text: "Gas Refilling" },
+  { image: "https://picsum.photos/seed/ac4/800/600", text: "Fridge Repair" },
+  { image: "https://picsum.photos/seed/ac5/800/600", text: "Outdoor Unit" },
+  { image: "https://picsum.photos/seed/ac6/800/600", text: "LED TV Fix" },
+  { image: "https://picsum.photos/seed/ac7/800/600", text: "Deep Freezer" },
+  { image: "https://picsum.photos/seed/ac8/800/600", text: "AC Shifting" },
+];
 import ACModelViewer from "./ACModelViewer";
 import BorderGlow from "./BorderGlow";
 import {
@@ -848,7 +859,7 @@ export default function App() {
         </section>
 
         {/* up close — pinned cinematic AC assembly */}
-        <section ref={seqRef} className="relative" style={{ height: "340vh" }}>
+        <section ref={seqRef} className="relative" style={{ height: "180vh" }}>
           <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden px-6 lg:px-10 py-10">
             <div className="max-w-2xl mx-auto text-center mb-8">
               <p className="text-xs uppercase tracking-widest font-medium mb-3" style={{ color: BRAND.maroon }}>
@@ -921,16 +932,7 @@ export default function App() {
 
           <div style={{ height: "500px", position: "relative" }}>
             <CircularGallery
-              items={[
-                { image: "https://picsum.photos/seed/ac1/800/600", text: "AC Deep Clean" },
-                { image: "https://picsum.photos/seed/ac2/800/600", text: "Split Unit Install" },
-                { image: "https://picsum.photos/seed/ac3/800/600", text: "Gas Refilling" },
-                { image: "https://picsum.photos/seed/ac4/800/600", text: "Fridge Repair" },
-                { image: "https://picsum.photos/seed/ac5/800/600", text: "Outdoor Unit" },
-                { image: "https://picsum.photos/seed/ac6/800/600", text: "LED TV Fix" },
-                { image: "https://picsum.photos/seed/ac7/800/600", text: "Deep Freezer" },
-                { image: "https://picsum.photos/seed/ac8/800/600", text: "AC Shifting" },
-              ]}
+              items={GALLERY_ITEMS}
               bend={3}
               textColor="#1b1b1a"
               borderRadius={0.05}
