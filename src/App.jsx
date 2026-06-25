@@ -462,10 +462,10 @@ export default function App() {
   ];
 
   const processSteps = [
-    { grad:"linear-gradient(135deg,#1B4F9E,#2563EB)", icon:`<svg viewBox="0 0 48 48" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round"><rect x="8" y="12" width="32" height="26" rx="4"/><path d="M16 8h16M24 38v4M18 42h12"/><line x1="14" y1="22" x2="34" y2="22"/><line x1="14" y1="28" x2="28" y2="28"/></svg>`, title:"Get in Touch",    text:"Call or WhatsApp us and tell us what's wrong — AC, fridge, freezer, or LED TV." },
-    { grad:"linear-gradient(135deg,#155E75,#0891B2)", icon:`<svg viewBox="0 0 48 48" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round"><circle cx="24" cy="22" r="12"/><path d="M24 10v4M24 30v4M12 22H8M40 22h-4"/><circle cx="24" cy="22" r="3" fill="white"/><path d="M24 38v4"/></svg>`,  title:"Quick Diagnosis", text:"We talk through the symptoms over the phone and give you a fair quote upfront." },
-    { grad:"linear-gradient(135deg,#8E2A33,#C0392B)", icon:`<svg viewBox="0 0 48 48" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round"><path d="M30 10l8 8-16 16-8-2-2-8L30 10z"/><line x1="22" y1="26" x2="16" y2="32"/><circle cx="36" cy="12" r="2" fill="white"/></svg>`,       title:"On-Site Repair",  text:"A technician comes to your home and fixes it on the spot — most jobs done same-day." },
-    { grad:"linear-gradient(135deg,#6B21A8,#8B5CF6)", icon:`<svg viewBox="0 0 48 48" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round"><path d="M24 8l4 12h12l-10 8 4 12-10-8-10 8 4-12L8 20h12z"/></svg>`,           title:"Aftercare",       text:"Got a follow-up question or the same issue comes back? We're a call away." },
+    { grad:"linear-gradient(135deg,#1B4F9E,#2563EB)", photo:"https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=240&fit=crop&q=80", title:"Get in Touch",    text:"Call or WhatsApp us and tell us what's wrong — AC, fridge, freezer, or LED TV." },
+    { grad:"linear-gradient(135deg,#155E75,#0891B2)", photo:"https://images.unsplash.com/photo-1718203862467-c33159fdc504?w=400&h=240&fit=crop&q=80", title:"Quick Diagnosis", text:"We talk through the symptoms over the phone and give you a fair quote upfront." },
+    { grad:"linear-gradient(135deg,#8E2A33,#C0392B)", photo:"https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=400&h=240&fit=crop&q=80", title:"On-Site Repair",  text:"A technician comes to your home and fixes it on the spot — most jobs done same-day." },
+    { grad:"linear-gradient(135deg,#6B21A8,#8B5CF6)", photo:"https://images.unsplash.com/photo-1521791136064-7986c2920216?w=400&h=240&fit=crop&q=80", title:"Aftercare",       text:"Got a follow-up question or the same issue comes back? We're a call away." },
   ];
 
   const reviews = [
@@ -734,7 +734,7 @@ export default function App() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               {
-                icon: `<svg viewBox="0 0 64 64" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="6" y="18" width="52" height="22" rx="4"/><line x1="6" y1="26" x2="58" y2="26"/><line x1="6" y1="32" x2="58" y2="32"/><line x1="6" y1="38" x2="58" y2="38"/><rect x="44" y="20" width="12" height="8" rx="2"/><circle cx="50" cy="24" r="1" fill="white"/><line x1="28" y1="40" x2="28" y2="48"/><line x1="36" y1="40" x2="36" y2="48"/><line x1="20" y1="48" x2="44" y2="48"/></svg>`,
+                photo: "https://images.unsplash.com/photo-1718203862467-c33159fdc504?w=900&h=500&fit=crop&q=80",
                 grad: "linear-gradient(135deg,#1B4F9E 0%,#2563EB 100%)",
                 tag: "Most requested",
                 title: "AC Service & Deep Cleaning",
@@ -742,31 +742,31 @@ export default function App() {
                 span: "lg:col-span-2",
               },
               {
-                icon: `<svg viewBox="0 0 64 64" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="32" cy="32" r="14"/><path d="M32 18V14M32 50v-4M18 32h-4M54 32h-4"/><path d="M25 32a7 7 0 0 1 7-7" stroke="white" strokeWidth="2"/><circle cx="32" cy="32" r="3" fill="white"/><path d="M46 20c2 3 3 7 3 12" strokeDasharray="3 3"/></svg>`,
+                photo: "https://images.unsplash.com/photo-1698479603408-1a66a6d9e80f?w=700&h=500&fit=crop&q=80",
                 grad: "linear-gradient(135deg,#8E2A33 0%,#C0392B 100%)",
                 title: "Gas Refilling (R-22, R-410A)",
                 desc: "Leak detection and refrigerant top-up for older and current split AC systems.",
               },
               {
-                icon: `<svg viewBox="0 0 64 64" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="8" y="24" width="48" height="18" rx="3"/><line x1="8" y1="31" x2="56" y2="31"/><line x1="8" y1="37" x2="56" y2="37"/><rect x="16" y="20" width="32" height="4" rx="1"/><line x1="24" y1="42" x2="24" y2="50"/><line x1="40" y1="42" x2="40" y2="50"/><line x1="18" y1="50" x2="46" y2="50"/><rect x="10" y="16" width="44" height="3" rx="1"/></svg>`,
+                photo: "https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=700&h=500&fit=crop&q=80",
                 grad: "linear-gradient(135deg,#155E75 0%,#0E7490 100%)",
                 title: "Installation & Shifting",
                 desc: "Professional mounting, relocation, and re-commissioning for split and window units.",
               },
               {
-                icon: `<svg viewBox="0 0 64 64" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="14" y="10" width="36" height="48" rx="4"/><rect x="18" y="14" width="14" height="18" rx="2"/><line x1="18" y1="36" x2="32" y2="36"/><line x1="18" y1="40" x2="46" y2="40"/><line x1="18" y1="44" x2="46" y2="44"/><line x1="18" y1="48" x2="46" y2="48"/><circle cx="39" cy="20" r="5"/><line x1="36" y1="20" x2="42" y2="20"/><line x1="39" y1="17" x2="39" y2="23"/></svg>`,
+                photo: "https://images.unsplash.com/photo-1630459065645-549fe5a56db4?w=700&h=500&fit=crop&q=80",
                 grad: "linear-gradient(135deg,#1B4F9E 0%,#1D4ED8 100%)",
                 title: "Refrigerator Repair",
                 desc: "Compressor, thermostat, and cooling faults fixed for all major fridge brands.",
               },
               {
-                icon: `<svg viewBox="0 0 64 64" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="8" y="22" width="48" height="34" rx="3"/><line x1="8" y1="32" x2="56" y2="32"/><rect x="14" y="24" width="8" height="6" rx="1"/><line x1="8" y1="22" x2="8" y2="16"/><line x1="56" y1="22" x2="56" y2="16"/><path d="M8 16h48" strokeDasharray="4 3"/><line x1="20" y1="36" x2="20" y2="52"/><line x1="32" y1="36" x2="32" y2="52"/><line x1="44" y1="36" x2="44" y2="52"/></svg>`,
+                photo: "https://images.unsplash.com/photo-1643494847705-74808059bf07?w=700&h=500&fit=crop&q=80",
                 grad: "linear-gradient(135deg,#6B21A8 0%,#7C3AED 100%)",
                 title: "Deep & Chest Freezers",
                 desc: "Repair and servicing for commercial and home chest and deep freezers.",
               },
               {
-                icon: `<svg viewBox="0 0 64 64" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="8" y="14" width="48" height="32" rx="3"/><rect x="14" y="20" width="36" height="20" rx="2"/><line x1="32" y1="46" x2="32" y2="54"/><line x1="20" y1="54" x2="44" y2="54"/><circle cx="32" cy="30" r="6"/><circle cx="32" cy="30" r="2" fill="white"/></svg>`,
+                photo: "https://images.unsplash.com/photo-1593359677879-a4bb92f4aa63?w=900&h=500&fit=crop&q=80",
                 grad: "linear-gradient(135deg,#8E2A33 0%,#BE185D 100%)",
                 title: "LED TV Repair",
                 desc: "Panel, power supply, and display issues diagnosed and repaired on-site for all major LED TV brands.",
@@ -786,11 +786,17 @@ export default function App() {
                   style={{ height: "100%" }}
                 >
                   <div className="flex flex-col h-full">
-                    <div className="relative flex items-center justify-center flex-shrink-0" style={{ height: svc.span === "lg:col-span-3" ? 180 : 160, background: svc.grad, borderRadius: "18px 18px 0 0" }}>
-                      <div style={{ width: 72, height: 72, opacity: 0.9 }} dangerouslySetInnerHTML={{ __html: svc.icon }} />
+                    <div className="relative overflow-hidden flex-shrink-0" style={{ height: svc.span === "lg:col-span-3" ? 220 : 200, borderRadius: "18px 18px 0 0", background: svc.grad }}>
+                      <img
+                        src={svc.photo}
+                        alt={svc.title}
+                        className="w-full h-full object-cover"
+                        style={{ opacity: 1 }}
+                        onError={e => { e.target.style.display = "none"; }}
+                      />
                       {svc.tag && (
                         <span className="absolute top-4 right-4 rounded-full px-3 py-1 text-xs font-semibold"
-                          style={{ backgroundColor: 'rgba(255,255,255,0.22)', color: '#fff', backdropFilter: 'blur(8px)' }}>
+                          style={{ backgroundColor: "rgba(255,255,255,0.22)", color: "#fff", backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,0.3)" }}>
                           {svc.tag}
                         </span>
                       )}
@@ -832,7 +838,6 @@ export default function App() {
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
             {processSteps.map((step, i) => {
-              const Icon = step.icon;
               const progress = processProgress[i] || 0;
               const scale = 0.85 + progress * 0.15;
               const opacity = 0.4 + progress * 0.6;
@@ -845,10 +850,15 @@ export default function App() {
                 >
                   <div className="rounded-2xl border border-neutral-100 bg-white overflow-hidden h-full hover:-translate-y-1 transition-transform duration-300"
                     style={{ boxShadow:'0 4px 16px rgba(27,79,158,0.08)' }}>
-                    <div className="flex items-center justify-center relative" style={{ height:120, background:step.grad }}>
-                      <div style={{ width:52, height:52, opacity:0.9 }} dangerouslySetInnerHTML={{ __html:step.icon }}/>
+                    <div className="relative overflow-hidden" style={{ height:160, background:step.grad }}>
+                      <img
+                        src={step.photo}
+                        alt={step.title}
+                        className="w-full h-full object-cover"
+                        onError={e => { e.target.style.display='none'; }}
+                      />
                       <div className="absolute top-3 left-3 w-8 h-8 rounded-full flex items-center justify-center text-white font-display font-bold text-sm"
-                        style={{ background:'rgba(255,255,255,0.25)' }}>
+                        style={{ background:'rgba(255,255,255,0.25)', backdropFilter:'blur(6px)' }}>
                         {i + 1}
                       </div>
                     </div>
@@ -897,19 +907,19 @@ export default function App() {
           <div className="grid sm:grid-cols-3 gap-5">
             {[
               {
-                icon: `<svg viewBox="0 0 64 64" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round"><rect x="6" y="18" width="52" height="22" rx="4"/><line x1="6" y1="26" x2="58" y2="26"/><line x1="6" y1="32" x2="58" y2="32"/><line x1="6" y1="38" x2="58" y2="38"/><rect x="44" y="20" width="12" height="8" rx="2"/><line x1="28" y1="40" x2="28" y2="48"/><line x1="36" y1="40" x2="36" y2="48"/><line x1="20" y1="48" x2="44" y2="48"/></svg>`,
+                photo: "https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=700&h=460&fit=crop&q=80",
                 grad: "linear-gradient(135deg,#1B4F9E 0%,#2563EB 100%)",
                 label: "Indoor Unit",
                 caption: "Wall-mounted split units — cleaned, serviced, and gas-checked in place.",
               },
               {
-                icon: `<svg viewBox="0 0 64 64" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round"><rect x="14" y="8" width="36" height="48" rx="4"/><circle cx="32" cy="28" r="12"/><circle cx="32" cy="28" r="5"/><line x1="32" y1="16" x2="32" y2="23"/><line x1="32" y1="33" x2="32" y2="40"/><line x1="20" y1="28" x2="27" y2="28"/><line x1="37" y1="28" x2="44" y2="28"/><line x1="20" y1="50" x2="44" y2="50"/></svg>`,
+                photo: "https://images.unsplash.com/photo-1665826189237-19707ccb073b?w=700&h=460&fit=crop&q=80",
                 grad: "linear-gradient(135deg,#155E75 0%,#0891B2 100%)",
                 label: "Outdoor Unit",
                 caption: "Condenser units serviced and re-gassed on-site, rain or heat.",
               },
               {
-                icon: `<svg viewBox="0 0 64 64" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round"><rect x="14" y="8" width="36" height="50" rx="4"/><rect x="18" y="12" width="12" height="20" rx="2"/><line x1="18" y1="36" x2="46" y2="36"/><line x1="18" y1="42" x2="46" y2="42"/><line x1="18" y1="48" x2="46" y2="48"/><circle cx="39" cy="20" r="5"/><line x1="36" y1="20" x2="42" y2="20"/><line x1="39" y1="17" x2="39" y2="23"/></svg>`,
+                photo: "https://images.unsplash.com/photo-1630459065645-549fe5a56db4?w=700&h=460&fit=crop&q=80",
                 grad: "linear-gradient(135deg,#6B21A8 0%,#8B5CF6 100%)",
                 label: "Refrigerators & Freezers",
                 caption: "Compressors, thermostats, and seals — repaired at home, same day.",
@@ -927,8 +937,13 @@ export default function App() {
                   className="h-full"
                 >
                   <div>
-                    <div className="flex items-center justify-center" style={{ height: 200, background: panel.grad, borderRadius: "18px 18px 0 0" }}>
-                      <div style={{ width: 80, height: 80, opacity: 0.9 }} dangerouslySetInnerHTML={{ __html: panel.icon }} />
+                    <div className="overflow-hidden relative" style={{ height: 220, borderRadius: "18px 18px 0 0", background: panel.grad }}>
+                      <img
+                        src={panel.photo}
+                        alt={panel.label}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        onError={e => { e.target.style.display = "none"; }}
+                      />
                     </div>
                     <div className="px-7 py-6">
                       <h3 className="font-display text-xl font-semibold text-neutral-900 mb-2">{panel.label}</h3>
