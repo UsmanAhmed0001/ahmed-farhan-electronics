@@ -318,10 +318,8 @@ class App {
 
 export default function CircularGallery({ items, bend = 3, textColor = '#ffffff', borderRadius = 0.05, font = 'bold 30px Figtree', fontUrl, scrollSpeed = 2, scrollEase = 0.05 }) {
   const containerRef = useRef(null);
-  const initialised  = useRef(false);
   useEffect(() => {
-    if (!containerRef.current || initialised.current) return;
-    initialised.current = true;
+    if (!containerRef.current) return;
     let app;
     let isMounted = true;
     resolveFont(font, fontUrl).then(resolvedFont => {
@@ -329,8 +327,9 @@ export default function CircularGallery({ items, bend = 3, textColor = '#ffffff'
       app = new App(containerRef.current, { items, bend, textColor, borderRadius, font: resolvedFont, scrollSpeed, scrollEase });
     });
     return () => { isMounted = false; if (app) app.destroy(); };
+  // items is GALLERY_ITEMS — a stable module-level constant, so this runs once
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // init once — items must be a stable reference (defined outside component)
+  }, []);
   return (
     <div className="circular-gallery" ref={containerRef} tabIndex={0} role="region" aria-label="Project gallery. Use left and right arrow keys to navigate." />
   );
